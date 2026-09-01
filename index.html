@@ -4,6 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>To‑Do — Local Storage App</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#5b21b6">
+  <link rel="icon" href="/icons/icon-192.svg" />
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -32,5 +35,23 @@
   </main>
 
   <script src="main.js"></script>
+  <script>
+    // Register service worker for PWA functionality
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(reg => console.log('Service worker registered', reg.scope))
+        .catch(err => console.warn('Service worker registration failed', err));
+    }
+
+    // Prompt flow: show beforeinstallprompt event to let user add to home screen
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      // Optionally show UI to user to trigger install prompt
+      // For this simple app we'll show a console hint
+      console.log('PWA can be installed: show install prompt manually with deferredPrompt.prompt()');
+    });
+  </script>
 </body>
 </html>
